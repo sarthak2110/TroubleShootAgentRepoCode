@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
+
+:root {
+    --gemini-bg: #131314;
+    --gemini-surface: #1e1f20;
+    --gemini-surface-hover: #282a2c;
+    --gemini-border: #383a3d;
+    --gemini-text-primary: #e3e3e3;
+    --gemini-text-secondary: #9aa0a6;
+    --gemini-blue: #4285f4;
+}
+
+body {
+    background-color: var(--gemini-bg) !important;
+    color: var(--gemini-text-primary) !important;
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+/* Gemini Signature Gradient Header */
+.gemini-gradient-text {
+    background: linear-gradient(74deg, #4285f4 0%, #9b72cf 35%, #d96570 70%, #d96570 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+.gemini-hero {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0 8px 0;
+    margin-bottom: 12px;
+}
+
+.gemini-hero h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 8px 0;
+}
+
+.gemini-hero p {
+    color: var(--gemini-text-secondary);
+    font-size: 1.05rem;
+    margin-top: 2px;
+    margin-bottom: 14px;
+}
+
+/* Top Mode Bar */
+.mode-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--gemini-surface);
+    border: 1px solid var(--gemini-border);
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+}
+
+.mode-indicator {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mode-btn-login {
+    background: linear-gradient(135deg, #1a73e8, #8ab4f8);
+    color: #131314 !important;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: opacity 0.2s;
+}
+
+.mode-btn-login:hover {
+    opacity: 0.9;
+}
+
+/* Gemini Suggestion Cards */
+.gemini-chip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+.gemini-chip {
+    background-color: var(--gemini-surface);
+    border: 1px solid var(--gemini-border);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 90px;
+}
+
+.gemini-chip:hover {
+    background-color: var(--gemini-surface-hover);
+    border-color: #5e6165;
+    transform: translateY(-2px);
+}
+
+.gemini-chip-title {
+    font-size: 0.92rem;
+    color: var(--gemini-text-primary);
+    font-weight: 500;
+}
+
+.gemini-chip-icon {
+    font-size: 1.2rem;
+    align-self: flex-end;
+}
+
+/* Floating Modal Backdrop */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+/* Modal Window */
+.modal-window {
+    background: #1e1f20;
+    border: 1px solid #3c4043;
+    border-radius: 20px;
+    padding: 28px;
+    width: 90%;
+    max-width: 380px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: #e3e3e3;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.modal-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-input-group label {
+    font-size: 0.85rem;
+    color: var(--gemini-text-secondary);
+}
+
+.modal-input {
+    background: #131314;
+    border: 1px solid #3c4043;
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #fff;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.modal-input:focus {
+    border-color: var(--gemini-blue);
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.eye-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #9aa0a6;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.modal-btn-submit {
+    flex: 1;
+    background: var(--gemini-blue);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.modal-btn-cancel {
+    background: transparent;
+    color: #9aa0a6;
+    border: 1px solid #3c4043;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}

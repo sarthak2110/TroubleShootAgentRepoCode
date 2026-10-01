@@ -1,27 +1,48 @@
-cat << 'EOF' > .gitignore
 # Environments & Virtual Envs
 .agent/
+.frontend/
 venv/
 .venv/
 env/
 ENV/
+env.bak/
+venv.bak/
 
 # Secrets & Environment Variables (CRITICAL)
 .env
+.env.*
 .env*.local
 *.env
 
-# GCP & Service Account Keys
+# GCP, ADC & Service Account Keys
 *.json
 service-account*.json
 credentials.json
 client_secret*.json
+!package.json
+!tsconfig.json
+.gcloud/
+gcp_credentials/
+legacy_credentials/
+.config/gcloud/
+
+# Chainlit Runtime & User Data
+.chainlit/translations/
+.chainlit/data/
+.files/
+chainlit.db
+chainlit.db-journal
 
 # Python bytecode & cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
 # Build & packaging
 build/
@@ -40,6 +61,12 @@ wheels/
 .installed.cfg
 *.egg
 
+# Frontend, Node & Static Build Temp
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # IDE & OS files
 .vscode/
 .idea/
@@ -47,8 +74,10 @@ wheels/
 *.swo
 .DS_Store
 Thumbs.db
+ehthumbs.db
 
-# Logs
+# Logs & Temp
 *.log
 logs/
-EOF
+tmp/
+temp/
