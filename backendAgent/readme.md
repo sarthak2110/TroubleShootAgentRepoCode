@@ -1,12 +1,6 @@
 
 ---
 
-### Terminal Command to Save / Update
-
-Run this in your terminal inside `backendAgent/` to update your `README.md`:
-
-```bash
-cat << 'EOF' > troubleshooting_agent/README.md
 # troubleshooting_agent
 
 An enterprise **Google Agent Development Kit (ADK)** application using **BigQuery Vector Search** as a RAG (Retrieval-Augmented Generation) backend.
