@@ -222,6 +222,11 @@ adk run troubleshooting_agent
 python -m troubleshooting_agent.run_agent
 ```
 
+### Option 4: Agent Engine Deployement
+```bash
+python -m deployment.deploy
+```
+
 ---
 
 ## Sample Queries
