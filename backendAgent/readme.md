@@ -147,6 +147,45 @@ CREATE TABLE IF NOT EXISTS `<PROJECT_ID>.support_rag.knowledge_base` (
 CREATE VECTOR INDEX IF NOT EXISTS kb_vector_idx
 ON `<PROJECT_ID>.support_rag.knowledge_base`(embedding)
 OPTIONS(distance_type = 'COSINE', index_type = 'IVF');
+
+--5. Example for adding data via bigquery
+INSERT INTO `saas-poc-env.support_rag.knowledge_base` (
+  kb_id,
+  error_symptom,
+  probable_cause,
+  impacted_phase,
+  step_by_step_resolution,
+  search_content,
+  embedding
+)
+SELECT
+  kb_id,
+  error_symptom,
+  probable_cause,
+  impacted_phase,
+  step_by_step_resolution,
+  content AS search_content,
+  ml_generate_embedding_result AS embedding
+FROM ML.GENERATE_EMBEDDING(
+  MODEL `saas-poc-env.support_rag.embedding_model`,
+  (
+    SELECT
+      'KB-ALM-001' AS kb_id,
+      '403 PERMISSION_DENIED: Caller does not have required IAM permissions' AS error_symptom,
+      'The service account executing the lifecycle pipeline lacks roles (e.g., roles/applifecyclemanager.admin or deployment service account impersonation).' AS probable_cause,
+      'Initialization / Provisioning' AS impacted_phase,
+      '1. Identify the caller service agent or user account from Cloud Audit Logs.\n2. Grant roles/applifecyclemanager.admin or the target resource editor role.\n3. If workload identity federation or cross-project deployment is used, ensure roles/iam.serviceAccountTokenCreator is bound to the deployer principal.' AS step_by_step_resolution,
+      'KB-ALM-001: 403 PERMISSION_DENIED: Caller does not have required IAM permissions. Cause: The service account executing the lifecycle pipeline lacks roles. Phase: Initialization / Provisioning' AS content
+    UNION ALL
+    SELECT
+      'KB-ALM-002',
+      'RESOURCE_EXHAUSTED / QuotaExceededError',
+      'Target project reached quota for compute instances, VPC subnets, external IPs, or persistent disk capacity during provisioning.',
+      'Provisioning / Scale-Out',
+      '1. Check Cloud Console under IAM & Admin > Quotas & System Limits.\n2. Filter by region and target service (e.g., Compute Engine, Cloud SQL).\n3. Submit a quota increase request or reconfigure the deployment spec to use a less saturated region/zone.',
+      'KB-ALM-002: RESOURCE_EXHAUSTED / QuotaExceededError. Cause: Target project reached quota for compute instances, VPC subnets, external IPs, or persistent disk capacity during provisioning. Phase: Provisioning / Scale-Out'
+  )
+);
 ```
 
 ---
