@@ -22,12 +22,24 @@ def get_gcp_bearer_token() -> str:
 
 
 async def stream_agent_engine(
-    user_id: str, session_id: str | None, message: str
+    user_id: str, 
+    session_id: str | None, 
+    message: str,
+    is_admin: bool = False,
+    id_token: str | None = None
 ) -> AsyncGenerator[dict, None]:
+    
+    # 🔒 SECURE CONTEXT INJECTION (Hidden from User UI)
+    if is_admin and id_token:
+        secure_message = f"[[SYSTEM_AUTH_CONTEXT: id_token={id_token}]]\n\nUser Input: {message}"
+    else:
+        secure_message = message
+
     payload = {
         "class_method": "async_stream_query",
-        "input": {"user_id": user_id, "session_id": session_id, "message": message},
+        "input": {"user_id": user_id, "session_id": session_id, "message": secure_message},
     }
+    
     headers = {
         "Authorization": "Bearer " + str(get_gcp_bearer_token()),
         "Content-Type": "application/json",
@@ -42,7 +54,7 @@ async def stream_agent_engine(
                 error_body = await response.aread()
                 yield {
                     "type": "error",
-                    "content": "API Error " + str(response.status_code) + ": " + error_body.decode("utf-8", errors="ignore"),
+                    "content": f"API Error {response.status_code}: {error_body.decode('utf-8', errors='ignore')}",
                 }
                 return
 
@@ -68,8 +80,8 @@ async def stream_agent_engine(
 
                         if "function_call" in part:
                             fn_name = part["function_call"].get("name", "")
-                            desc = TOOL_DESCRIPTIONS.get(fn_name, "Running tool: `" + str(fn_name) + "`...")
-                            yield {"type": "thought", "content": "⚙️ **" + desc + "**\n\n"}
+                            desc = TOOL_DESCRIPTIONS.get(fn_name, f"Running tool: `{fn_name}`...")
+                            yield {"type": "thought", "content": f"⚙️ **{desc}**\n\n"}
 
                         if "thought" in part:
                             yield {"type": "thought", "content": str(part["thought"]) + "\n\n"}

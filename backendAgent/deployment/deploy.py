@@ -49,7 +49,7 @@ try:
         agent_engine=root_agent,
         requirements="./requirements.txt",
         extra_packages=["./troubleshooting_agent"],
-        display_name="troubleshooting-agent-service",
+        display_name="secure_test_troubleshooting_agent-v2",
         description="Troubleshooting agent using BigQuery Vector Search RAG",
         env_vars=ENV_VARS,
     )

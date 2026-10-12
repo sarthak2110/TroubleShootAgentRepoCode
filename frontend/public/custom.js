@@ -100,14 +100,12 @@
         }
     }
 
-    // Initialize modal on load
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", injectModal);
     } else {
         injectModal();
     }
 
-    // Global helper to open modal
     window.openAdminModal = function () {
         injectModal();
         const overlay = document.getElementById("adminModalOverlay");
@@ -122,7 +120,6 @@
         }
     };
 
-    // Global helper to populate Chainlit chat input
     window.populateChatInput = function (text, autoSubmit) {
         if (autoSubmit === undefined) autoSubmit = false;
 
@@ -131,7 +128,10 @@
             document.querySelector("#chat-input") ||
             document.querySelector("textarea");
 
-        if (!chatInput) return;
+        if (!chatInput) {
+            console.warn("⚠️ Chat input textarea not found!");
+            return;
+        }
 
         try {
             const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
@@ -176,20 +176,27 @@
         }
     };
 
-    // DELEGATED EVENT LISTENER: Catches clicks even after DOMPurify strips inline onclicks
     document.addEventListener(
         "click",
         function (e) {
-            // Check for Switch / Retry / Authenticate Admin buttons
             const loginBtn = e.target.closest(".mode-btn-login");
             if (loginBtn) {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log("⚡ Admin login button clicked");
                 window.openAdminModal();
                 return;
             }
 
-            // Check for Gemini Suggestion Chips
+            const publicBtn = e.target.closest(".mode-btn-public");
+            if (publicBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log("🛡️ Switch to Public Mode button clicked");
+                window.populateChatInput("__SWITCH_PUBLIC__", true);
+                return;
+            }
+
             const chip = e.target.closest(".gemini-chip");
             if (chip) {
                 e.preventDefault();
@@ -201,10 +208,9 @@
                 return;
             }
         },
-        true // Run in capturing phase
+        true
     );
 
-    // Close modal on Escape
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
             const overlay = document.getElementById("adminModalOverlay");
